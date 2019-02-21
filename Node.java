@@ -1,24 +1,35 @@
-import java.util.LinkedList;
 
 public class Node {
-	LinkedList<Node> adj;
-	Node pred;
-	int num;
+
+	byte[][] state; // n.STATE
+	Node parent; // n.PARENT
+	String action; // n.ACTION
+	int pathCost; // n.PATH-COST
 	
-	public Node(int num) {
-		adj = new LinkedList<>();
-		this.num = num;
+	public Node(String action, int pathCost) {
+		this.action = action;
+		this.pathCost = pathCost;
 	}
 	
-	// n.STATE
-	// n.PARENT
-	// n.ACTION
-	// n.PATH-COST
+	public static Node[] actions() {
+		return null;
+	}
 	
-	// CHILD-NODE(problem,parent,action) returns a node
-	// with
-	//   STATE = problem.RESULT(parent.STATE,action)
-	//   PARENT = parent, ACTION = action,
-	//   PATH-COST = parent.PATH-COST + problem.STEP-COST(parent.STATE,action)
+	////
+	// Setters and getters.
+	////
 	
+	public void shallowCopyState(byte[][] state) {
+		this.state = state;
+	}
+	
+	public void deepCopyState(byte[][] state) {
+		this.state = new byte[state.length][state[0].length];
+
+		for(int a = 0; a < state.length; a++) {
+			for(int b = 0; b < state[0].length; b++) {
+				this.state[a][b] = state[a][b];
+			}
+		}
+	}
 }

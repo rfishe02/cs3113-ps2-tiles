@@ -1,37 +1,59 @@
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.PriorityQueue;
+import java.util.Random;
 
 public class Test {
 
 	public static void main(String[] args) {
 		
-		Graph g = new Graph();
-		int st = 1;
-		int dest = 8;
+		Tree g = new Tree();
 		
-		// Build a graph using a file in this format:
-		// 1 2-75,3-23,4-21
-		// nodeA NodeB-Weight,NodeC-Weight,...
+		// Create the inital problem state.
 		
-		boolean result = g.buildGraph("list.txt");
-		
-		if(result) {
-			
-			//g.printAdjList();
-			
-			if(g.getNode(st) != null && g.getNode(dest) != null) {
-				
-				aStar(g,g.getNode(st),g.getNode(dest));
-				
-			} else {
-				System.out.println("The starting point or destination doesn't exist.");
-			}
-			
-		} else {
-			System.out.println("Incorrect file format specified.");
-		}
+		byte[][] start = getInitialState();
+		//printBoard(start);
 
+		// Create a starting node with the inital state & a path cost of zero.
+		Node nt = new Node(null,0);
+		nt.deepCopyState(start);
+
+		
+		
+	}
+	
+	//////
+	// Get the initial state of the board.
+	//////
+	
+	public static byte[][] getInitialState() {
+		HashSet<Byte> used = new HashSet<>();
+		Random rand = new Random();
+		byte[][] board = new byte[3][3];
+		int spots = (board.length * board[0].length) - 1;
+		int row = 0;
+		int col = 0;
+		int i;
+		byte tmp;
+		
+		i = spots;
+		
+		while(i > 0) {
+			tmp = (byte)(rand.nextInt(spots)+1);
+			
+			if(!used.contains(tmp)) {
+				board[row][col] = tmp;
+
+				col++;
+				if(col >= board[0].length) {
+					col = 0;
+					row++;
+				}
+				used.add(tmp);
+				i--;
+			}
+		}
+		
+		return board;
 	}
 	
 	// Use a greedy best-first search. Expands the nodes closest to the goal, using just
@@ -48,7 +70,30 @@ public class Test {
 	
 	// f(n) never overestimes the true cost of a solution.
 	
+	// Notes:
+	// Store the sequence of moves as a String.
+	// aStar keeps the frontier.
+	
 	//////////////////////////////////
+	
+	// TreeSearch
+	// initialize the frontier using the initial state of the problem.
+	// loop do
+	//   if the frontier is empty then return failure.
+	//   choose a leaf node and remove it from the frontier.
+	//   if the node contains a goal state then return the solution.
+	//   expand the chosen node, adding the resulting nodes to the frontier.
+	
+	// graphSearch
+	// intitilize the frontier using the initial state of problem.
+	// initilize the explored set to be empty.
+	// loop do
+	// 	if the frontier is empty then return failure
+	//  choose a leaf node and remove it from the frontier
+	//  if the leaf node contains a goal state, then return the solution.
+	//  add the node to the explored set
+	//  expand the chosen node, adding the results to the frontier, 
+	//    only if not in the frontier or explored set.
 	
 	// Uniform-Cost-Search
 	// node <- a node with STATE = problem.INITIAL-STATE, PATH-COST = 0
@@ -66,58 +111,64 @@ public class Test {
 	//     else if child.STATE is in frontier with higher PATH-COST then
 	//       replace that frontier node with child
 	
-	public void treeSearch() {
-		
-		// initialize the frontier using the initial state of the problem.
-		// loop do
-		//   if the frontier is empty then return failure.
-		//   choose a leaf node and remove it from the frontier.
-		//   if the node contains a goal state then return the solution.
-		//   expand the chosen node, adding the resulting nodes to the frontier.
-		
-	}
-	
-	public void graphSearch() {
-		// intitilize the frontier using the initial state of problem.
-		// initilize the explored set to be empty.
-	
-		// loop do
-		// 	if the frontier is empty then return failure
-		//  choose a leaf node and remove it from the frontier
-		//  if the leaf node contains a goal state, then return the solution.
-		//  add the node to the explored set
-		//  expand the chosen node, adding the results to the frontier, 
-		//    only if not in the frontier or explored set.
-		
-	}
-
-	public static void aStar(Graph g, Node st, Node dest) {
-		Queue<Node> q = new LinkedList<>();
-		HashSet<Integer> visited = new HashSet<>();
+	public void aStar(Node start, byte[][] inital) {
+		PriorityQueue<Node> q = new PriorityQueue<>(1,new NodeComparator());
+		HashSet<Node> explored = new HashSet<>();
 		Node u;
 		
-		q.add(st);
+		q.add(start);
 		
 		while(!q.isEmpty()) {
 			
 			u = q.remove();
 			
-			if(u.num == dest.num) {
-				q.clear(); // Clear the queue when we find the destination.
+			if(goalTest(u)) {
+				q.clear();
 			} else {
 				
-				// Look at the nearby nodes & add the unvisted nodes.
-				for(Node v : u.adj) {
-					if(!visited.contains(v.num)) {
-						v.pred = u;
-						visited.add(v.num);
-						q.add(v);
-					}
-				}
+				explored.add(u);
+				
+				
+				
 			}
 			
 		}
 		
+	}
+	
+	public static boolean goalTest(Node u) {
+		boolean result = true;
+		
+		byte[][] goal =
+		{
+		{1,2,3},
+		{4,5,6},
+		{7,8,0}
+		};
+		
+		for(int a = 0; a < u.state.length-1; a++) {
+			for(int b = 0; b < u.state[0].length-1; b++) {
+				if(u.state[a][b]!=goal[a][b]) {
+					result = false;
+					break;
+				}
+			}
+		}
+		
+		return result;
+	}
+	
+	//////
+	// Used for debugging.
+	//////
+	
+	public static void printBoard(byte[][] board) {
+		for(int a = 0; a < board.length; a++) {
+			for(int b = 0; b < board[0].length; b++) {
+				System.out.printf("%-3s  ",(board[a][b]+""));
+			}
+			System.out.println();
+		}
 	}
 	
 }
