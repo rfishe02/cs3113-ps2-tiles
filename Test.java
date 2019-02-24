@@ -29,15 +29,17 @@ public class Test {
 			Node start;
 			Solution sol;
 			
-			bw.write("trial,init_state,found,steps,solution\n");
+			bw.write("init_state,found,time_millis,steps,solution\n");
 
 			// Run the test & print the average result.
 			
-			long startTime = System.currentTimeMillis();
+			long trialStart;
+			long trialEnd;
 
+			System.out.println("Running Trials...");
+			
 			for (int i = 0; i < trials; i++) {
-				bw.write(i+",");
-				
+
 				// Create the inital problem state.
 
 				if(type == 0) {
@@ -54,22 +56,24 @@ public class Test {
 				start.setDeepCopy(prob.start);
 				start.pos = prob.getStartPoint();
 
+				trialStart = System.currentTimeMillis();
 				Node res = aStar(prob, start);
+				trialEnd = System.currentTimeMillis();
+				
 				bw.write(prob.getStrStartState()+",");
 
 				if (res != null) {
 					sol = solution(res);
-					bw.write(1+","+sol.size+","+sol.steps);
+					bw.write(1+","+(trialEnd-trialStart)+","+sol.size+","+sol.steps);
 					//System.out.printf("%2d : Solution found.\n",i);
 				} else {
-					bw.write(0+","+"NA,"+"NA");
+					bw.write(0+","+(trialEnd-trialStart)+","+"NA,"+"NA");
 					//System.out.printf("%2d : No solution found.\n",i);
 				}
 				bw.write("\n");
 			}
-
-			System.out.println(System.currentTimeMillis()-startTime);
 			
+			System.out.println("Test Complete.");
 			bw.close();
 
 		} catch (IOException ex) {
