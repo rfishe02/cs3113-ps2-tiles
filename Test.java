@@ -188,13 +188,13 @@ public class Test {
 	public static String getLabel(int[] action) {
 
 		if (action[0] == -1) {
-			return "UP";
+			return "U";
 		} else if (action[0] == 1) {
-			return "DOWN";
+			return "D";
 		} else if (action[1] == -1) {
-			return "LEFT";
+			return "L";
 		} else {
-			return "RIGHT";
+			return "R";
 		}
 
 	}
