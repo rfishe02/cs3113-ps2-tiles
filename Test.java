@@ -22,6 +22,19 @@ public class Test {
 		
 		Node res = aStar(p,s);
 		
+		if(res != null) {
+			printBoard(res.board);
+			
+			Node current = res;
+			while(current.parent != null) {
+				System.out.println(current.action[0]+" "+current.action[1]);
+				current = current.parent;
+			}
+			
+		} else {
+			System.out.println("No solution found.");
+		}
+		
 	}
 
 	//////
@@ -30,8 +43,8 @@ public class Test {
 
 	public static Node aStar(Problem p, Node start) {
 		PriorityQueue<Node> q = new PriorityQueue<>(1,new NodeComparator());
-		HashSet<Node> explored = new HashSet<>();
-		HashMap<Node,Integer> pathCost = new HashMap<>();
+		HashSet<Node> visited = new HashSet<>();
+		HashMap<Node,Integer> visitingCost = new HashMap<>();
 		Node u = null;
 		Node v;
 
@@ -42,10 +55,11 @@ public class Test {
 			u = q.remove();
 			
 			if(p.goalTest(u)) {
-				q.clear();
+				return u;
 			} else {
 				
-				explored.add(u);
+				visitingCost.remove(u);
+				visited.add(u);
 				
 				for(int[] a : p.actions) {
 					
@@ -54,15 +68,15 @@ public class Test {
 							
 							v = childNode(p,u,a);
 							
-							if(!explored.contains(v)) {
+							if(!visited.contains(v)) {
 								
-								if(q.contains(v)) {
+								if(visitingCost.containsKey(v)) {
 									
 									// Because of the way the hash code function
 									// works for the Node class, this will look
 									// for the exact state in the HashMap.
 								
-									if(v.pathCost < pathCost.get(v)) {
+									if(v.pathCost < visitingCost.get(v)) {
 										
 										// This will remove the duplicate,
 										// because the queue will find
@@ -75,9 +89,7 @@ public class Test {
 									
 								} else {
 									q.add(v);
-									pathCost.put(v, v.pathCost);
-
-									System.out.println(v.pathCost);
+									visitingCost.put(v, v.pathCost);
 								}
 								
 							}
@@ -92,7 +104,7 @@ public class Test {
 			
 		}
 		
-		return u; // Return the Node that caused the queue to clear.
+		return null;
 	}
 
 	//////
