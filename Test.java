@@ -45,7 +45,7 @@ public class Test {
 		PriorityQueue<Node> q = new PriorityQueue<>(1,new NodeComparator());
 		HashSet<Node> visited = new HashSet<>();
 		HashMap<Node,Integer> visitingCost = new HashMap<>();
-		Node u = null;
+		Node u;
 		Node v;
 
 		q.add(start);
