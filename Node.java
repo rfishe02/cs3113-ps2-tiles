@@ -1,35 +1,91 @@
 
-public class Node {
+public class Node extends Object {
 
-	byte[][] state; // n.STATE
-	Node parent; // n.PARENT
-	String action; // n.ACTION
-	int pathCost; // n.PATH-COST
+	// n.STATE
+	// n.PARENT
+	// n.PATH-COST
+	// n.ACTION
 	
-	public Node(String action, int pathCost) {
-		this.action = action;
+	Node parent; 
+	
+	byte[][] board; 
+	int[] pos;
+	
+	int[] action;	
+	int pathCost; 
+
+	public Node(int pathCost) {
 		this.pathCost = pathCost;
-	}
-	
-	public static Node[] actions() {
-		return null;
 	}
 	
 	////
 	// Setters and getters.
 	////
 	
-	public void shallowCopyState(byte[][] state) {
-		this.state = state;
-	}
-	
-	public void deepCopyState(byte[][] state) {
-		this.state = new byte[state.length][state[0].length];
+	public void setDeepCopy(byte[][] board) {
+		this.board = new byte[board.length][board[0].length];
 
-		for(int a = 0; a < state.length; a++) {
-			for(int b = 0; b < state[0].length; b++) {
-				this.state[a][b] = state[a][b];
+		for(int a = 0; a < board.length; a++) {
+			for(int b = 0; b < board[0].length; b++) {
+				this.board[a][b] = board[a][b];
 			}
 		}
 	}
+	
+	public byte[][] getDeepCopy() {
+		byte[][] res = new byte[this.board.length][this.board[0].length];
+
+		for(int a = 0; a < this.board.length; a++) {
+			for(int b = 0; b < this.board[0].length; b++) {
+				res[a][b] = this.board[a][b];
+			}
+		}
+		return res;
+	}
+	
+	public void setAction(int[] action) {
+		this.action = action;
+		
+		pos = new int[2];
+		
+		pos[0] = parent.pos[0]+action[0];
+		pos[1] = parent.pos[1]+action[1];
+	}
+
+	////
+	// Override the equals & hashcode method to make it easier to compare states.
+	////
+
+	@Override
+	public boolean equals(Object obj) {
+		boolean res = true;
+		Node n = (Node)obj;
+		
+		int a = 0;
+		while(res && a < board.length) {
+			for(int b = 0; b < board[0].length; b++) {
+				if(board[a][b] != n.board[a][b]) {
+					res = false;
+					break;
+				}
+			}
+			a++;
+		}
+
+		return res;
+	}
+	
+	@Override
+	public int hashCode() {
+		String state = "";
+		
+		for(int a = 0; a < board.length; a++) {
+			for(int b = 0; b < board[0].length; b++) {
+				state += board[a][b]+"";
+			}
+		}
+
+		return state.hashCode();
+	}
+	
 }
