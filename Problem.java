@@ -123,6 +123,8 @@ public class Problem {
 	//////
 	// Calculate the step cost by adding up the Manhattan distance for each number.
 	//////
+	
+	// This is the hueristic mentioned in the book.
 
 	public int stepCost(Node child) {
 		int res = 0;

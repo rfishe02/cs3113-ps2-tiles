@@ -10,9 +10,19 @@ public class Test {
 
 	public static void main(String[] args) {
 
+		test(0,50,"first_results.txt");
+
+	}
+	
+	//////
+	// Run a series of tests using a problem with a particular heuristic.
+	//////
+	
+	public static void test(int type, int trials, String filename) {
+		
 		try {
 
-			BufferedWriter bw = new BufferedWriter(new PrintWriter("./results.txt"));
+			BufferedWriter bw = new BufferedWriter(new PrintWriter(filename));
 			Problem prob;
 			Node start;
 			Solution sol;
@@ -21,12 +31,16 @@ public class Test {
 
 			// Run the test & print the average result.
 
-			for (int i = 0; i < 50; i++) {
+			for (int i = 0; i < trials; i++) {
 				bw.write(i+",");
 				
 				// Create the inital problem state.
 
-				prob = new Problem();
+				if(type == 0) {
+					prob = new Problem();
+				} else {
+					prob = new MyHeuristic();
+				}
 				prob.setInitialState(3);
 				prob.setGoalState(3);
 
@@ -42,9 +56,10 @@ public class Test {
 				if (res != null) {
 					sol = solution(res);
 					bw.write(1+","+sol.size+","+sol.steps);
+					System.out.printf("%2d : Solution found.\n",i);
 				} else {
 					bw.write(0+","+"NA,"+"NA");
-					System.out.println("No solution found.");
+					System.out.printf("%2d : No solution found.\n",i);
 				}
 				bw.write("\n");
 			}
@@ -54,7 +69,7 @@ public class Test {
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
-
+		
 	}
 
 	//////
@@ -156,8 +171,6 @@ public class Test {
 			sol.steps += s.pop() + " ";
 		}
 		sol.steps = sol.steps.substring(0,sol.steps.length()-1);
-		
-		System.out.println(sol.steps);
 		
 		return sol;
 	}
