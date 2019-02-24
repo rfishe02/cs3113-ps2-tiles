@@ -6,6 +6,8 @@ public class Problem {
 	byte[][] start;
 	byte[][] goal;
 	int[][] actions = {{-1,0},{1,0},{0,-1},{0,1}};
+	int[] col = {2,0,1,2,0,1,2,0,1};
+	int[] row = {2,0,0,0,1,1,1,2,2};
 	
 	//////
 	// Get the goal state for the board.
@@ -83,7 +85,7 @@ public class Problem {
 	}
 	
 	//////
-	// Check to see whether the current state is the goal state.
+	// Check to see whether the state is the goal state.
 	//////
 	
 	public boolean goalTest(Node u) {
@@ -119,14 +121,11 @@ public class Problem {
 	}
 
 	//////
-	// Calculate the step cost by adding up the manhattan distance for each number.
+	// Calculate the step cost by adding up the Manhattan distance for each number.
 	//////
 	
 	public int stepCost(Node child) {
 		int res = 0;
-
-		int[] col = {2,0,1,2,0,1,2,0,1};
-		int[] row = {2,0,0,0,1,1,1,2,2};
 		
 		for(int a = 0; a < child.board.length; a++) {
 			for(int b = 0; b < child.board[0].length; b++) {

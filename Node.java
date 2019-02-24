@@ -1,11 +1,6 @@
 
 public class Node extends Object {
 
-	// n.STATE
-	// n.PARENT
-	// n.PATH-COST
-	// n.ACTION
-	
 	Node parent; 
 	
 	byte[][] board; 
@@ -53,7 +48,7 @@ public class Node extends Object {
 	}
 
 	////
-	// Override the equals & hashcode method to make it easier to compare states.
+	// Override the equals method to make it easier to compare states.
 	////
 
 	@Override
@@ -74,6 +69,10 @@ public class Node extends Object {
 
 		return res;
 	}
+	
+	////
+	// Override the hashCode method to make it easier to compare states.
+	////
 	
 	@Override
 	public int hashCode() {
