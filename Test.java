@@ -32,6 +32,8 @@ public class Test {
 			bw.write("trial,init_state,found,steps,solution\n");
 
 			// Run the test & print the average result.
+			
+			long startTime = System.currentTimeMillis();
 
 			for (int i = 0; i < trials; i++) {
 				bw.write(i+",");
@@ -58,14 +60,16 @@ public class Test {
 				if (res != null) {
 					sol = solution(res);
 					bw.write(1+","+sol.size+","+sol.steps);
-					System.out.printf("%2d : Solution found.\n",i);
+					//System.out.printf("%2d : Solution found.\n",i);
 				} else {
 					bw.write(0+","+"NA,"+"NA");
-					System.out.printf("%2d : No solution found.\n",i);
+					//System.out.printf("%2d : No solution found.\n",i);
 				}
 				bw.write("\n");
 			}
 
+			System.out.println(System.currentTimeMillis()-startTime);
+			
 			bw.close();
 
 		} catch (IOException ex) {
