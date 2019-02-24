@@ -27,6 +27,15 @@ public class Node extends Object {
 		}
 	}
 	
+	public void setAction(int[] action) {
+		this.action = action;
+		
+		pos = new int[2];
+		
+		pos[0] = parent.pos[0]+action[0];
+		pos[1] = parent.pos[1]+action[1];
+	}
+	
 	public byte[][] getDeepCopy() {
 		byte[][] res = new byte[this.board.length][this.board[0].length];
 
@@ -38,13 +47,16 @@ public class Node extends Object {
 		return res;
 	}
 	
-	public void setAction(int[] action) {
-		this.action = action;
+	public String getStrState() {
+		String state = "";
 		
-		pos = new int[2];
-		
-		pos[0] = parent.pos[0]+action[0];
-		pos[1] = parent.pos[1]+action[1];
+		for(int a = 0; a < board.length; a++) {
+			for(int b = 0; b < board[0].length; b++) {
+				state += board[a][b]+" ";
+			}
+		}
+
+		return state.substring(0,state.length()-1);
 	}
 
 	////
