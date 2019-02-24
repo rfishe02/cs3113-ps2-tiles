@@ -44,11 +44,9 @@ public class Test {
 			if(p.goalTest(u)) {
 				q.clear();
 			} else {
+				
 				explored.add(u);
 				
-				// For each action, create a child node that results because
-				// of that action.
-
 				for(int[] a : p.actions) {
 					
 					if(a[0] + u.pos[0] >= 0 && a[0] + u.pos[0] < u.board.length) {
@@ -78,6 +76,8 @@ public class Test {
 								} else {
 									q.add(v);
 									pathCost.put(v, v.pathCost);
+
+									System.out.println(v.pathCost);
 								}
 								
 							}
@@ -87,9 +87,11 @@ public class Test {
 					
 				}
 				
+				
 			}
 			
 		}
+		
 		return u; // Return the Node that caused the queue to clear.
 	}
 
@@ -115,12 +117,14 @@ public class Test {
 	//////
 	
 	public static void printBoard(byte[][] board) {
+		System.out.println();
 		for(int a = 0; a < board.length; a++) {
 			for(int b = 0; b < board[0].length; b++) {
 				System.out.printf("%-3s  ",(board[a][b]+""));
 			}
 			System.out.println();
 		}
+		System.out.println();
 	}
 	
 }
