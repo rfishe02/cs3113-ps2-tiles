@@ -10,7 +10,9 @@ public class Test {
 
 	public static void main(String[] args) {
 
-		test(0,100,"manhatt_results.txt");
+		test(0,500,"manhatt_results.txt");
+		
+		test(1,500,"disp_results.txt");
 
 	}
 	
