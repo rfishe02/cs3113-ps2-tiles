@@ -119,7 +119,7 @@ public class Problem {
 	}
 
 	//////
-	// Calculate step cost.
+	// Calculate the step cost by adding up the manhattan distance for each number.
 	//////
 	
 	public int stepCost(Node child) {
@@ -132,7 +132,6 @@ public class Problem {
 			for(int b = 0; b < child.board[0].length; b++) {
 
 				res += Math.abs(row[child.board[a][b]] - a) + Math.abs(col[child.board[a][b]] - b);
-				System.out.println(child.board[a][b]);
 				
 			}
 		}

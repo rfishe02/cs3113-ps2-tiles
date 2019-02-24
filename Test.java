@@ -20,7 +20,7 @@ public class Test {
 		s.setDeepCopy(p.start);
 		s.pos = p.getStartPoint();
 		
-		System.out.println(p.stepCost(s));
+		Node res = aStar(p,s);
 		
 	}
 
