@@ -17,13 +17,24 @@ public class Problem {
 		goal = new byte[dim][dim];
 		byte i = 1;
 
+		col = new int[dim*dim];
+		row = new int[dim*dim];
+		
 		for (int a = 0; a < goal.length; a++) {
 			for (int b = 0; b < goal[0].length; b++) {
 				goal[a][b] = i;
+				
+				if(i < col.length) {
+					col[i] = b;
+					row[i] = a;
+				}
+				
 				i++;
 			}
 		}
-
+		
+		col[0] = goal.length - 1;
+		row[0] = goal.length - 1;
 		goal[goal.length - 1][goal.length - 1] = 0;
 	}
 
